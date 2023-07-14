@@ -1,0 +1,13 @@
+config:
+  fail_fast: true
+jaffle_shop:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: s3b9kuqfl95hb1woj46bimlcc6v6sn
+      dataset: data_warehouse_test
+      threads: 4
+      timeout_seconds: 300
+      priority: interactive

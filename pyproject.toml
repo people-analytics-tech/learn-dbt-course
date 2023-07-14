@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "dbt-course"
+version = "0.1.0"
+description = ""
+authors = ["Guilherme da Silva <guilherme.laercio@stone.com.br>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+dbt-bigquery = "^1.4.0"
+python-decouple = "^3.7"
+shandy-sqlfmt = {extras = ["jinjafmt"], version = "^0.18.1"}
+
+[tool.poetry.dev-dependencies]
+isort = "^5.10.1"
+pylint = "^2.12.2"
+pre-commit = "^2.16.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
