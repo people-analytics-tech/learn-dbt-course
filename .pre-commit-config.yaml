@@ -1,0 +1,35 @@
+repos:
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        args:
+          [
+            "--select=F",
+            "--max-line-length=88",
+            "--per-file-ignores=__init__.py:F401",
+          ]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-ast
+      - id: check-json
+      - id: check-yaml
+      - id: detect-private-key
+  - repo: local
+    hooks:
+      - id: export-requirements
+        name: Export requeriments.txt
+        language: system
+        pass_filenames: false
+        entry: poetry export --without-hashes -o requirements.txt
+        files: ^(pyproject.toml|poetry.lock)$
+  - repo: https://github.com/tconbeer/sqlfmt
+    rev: v0.18.0
+    hooks:
+      - id: sqlfmt
+        language_version: python
+        additional_dependencies: ['.[jinjafmt]']

@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: data_warehouse_test
+    description: Test dataset used in project for source and output models
+    tables:
+      - name: jaffle_shop_customers
+      - name: jaffle_shop_orders
+      - name: stripe_payments
