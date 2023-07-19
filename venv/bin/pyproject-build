@@ -1,4 +1,4 @@
-#!/home/guilherme_laercio/projects/dbt-course/venv/bin/python3
+#!/home/guilherme_laercio/projects/learn-dbt-course/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

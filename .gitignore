@@ -1,1 +1,5 @@
-jaffle_shop/target/*
+__pycache__
+.idea
+.vscode
+venv
+.env

@@ -1,4 +1,4 @@
-#!/home/guilherme_laercio/projects/dbt-course/venv/bin/python3
+#!/home/guilherme_laercio/projects/learn-dbt-course/venv/bin/python3
 # dul-upload-pack - git-upload-pack in python
 # Copyright (C) 2008 John Carr <john.carr@unrouted.co.uk>
 #
