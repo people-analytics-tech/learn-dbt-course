@@ -1,18 +1,8 @@
-{% macro rand() -%}
-    {{ adapter.dispatch('rand', 'dbt_expectations') () }}
-{%- endmacro %}
+{% macro rand() -%} {{ adapter.dispatch("rand", "dbt_expectations")() }} {%- endmacro %}
 
-{% macro default__rand() -%}
+{% macro default__rand() -%} rand() {%- endmacro -%}
 
-    rand()
-
-{%- endmacro -%}
-
-{% macro bigquery__rand() -%}
-
-    rand()
-
-{%- endmacro -%}
+{% macro bigquery__rand() -%} rand() {%- endmacro -%}
 
 {% macro snowflake__rand(seed) -%}
 
@@ -20,14 +10,6 @@
 
 {%- endmacro -%}
 
-{% macro postgres__rand() -%}
+{% macro postgres__rand() -%} random() {%- endmacro -%}
 
-    random()
-
-{%- endmacro -%}
-
-{% macro redshift__rand() -%}
-
-    random()
-
-{%- endmacro -%}
+{% macro redshift__rand() -%} random() {%- endmacro -%}
