@@ -1,5 +1,9 @@
-{{ config(materialized="ephemeral") }}
+{{ config(materialized='ephemeral') }}
 
-select first_name, last_name, email
+select
 
-from {{ ref("data_people") }}
+  first_name,
+  last_name,
+  email
+
+from {{ ref('data_people') }}

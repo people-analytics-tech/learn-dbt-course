@@ -1,26 +1,21 @@
 {%- macro deduplicate(relation, partition_by, order_by) -%}
-    {{
-        return(
-            adapter.dispatch("deduplicate", "dbt_utils")(
-                relation, partition_by, order_by
-            )
-        )
-    }}
+    {{ return(adapter.dispatch('deduplicate', 'dbt_utils')(relation, partition_by, order_by)) }}
 {% endmacro %}
 
 {%- macro default__deduplicate(relation, partition_by, order_by) -%}
 
-    with
-        row_numbered as (
-            select
-                _inner.*,
-                row_number() over (
-                    partition by {{ partition_by }} order by {{ order_by }}
-                ) as rn
-            from {{ relation }} as _inner
-        )
+    with row_numbered as (
+        select
+            _inner.*,
+            row_number() over (
+                partition by {{ partition_by }}
+                order by {{ order_by }}
+            ) as rn
+        from {{ relation }} as _inner
+    )
 
-    select distinct data.*
+    select
+        distinct data.*
     from {{ relation }} as data
     {#
     -- Not all DBs will support natural joins but the ones that do include:
@@ -37,11 +32,7 @@
 {# Redshift should use default instead of Postgres #}
 {% macro redshift__deduplicate(relation, partition_by, order_by) -%}
 
-    {{
-        return(
-            dbt_utils.default__deduplicate(relation, partition_by, order_by=order_by)
-        )
-    }}
+    {{ return(dbt_utils.default__deduplicate(relation, partition_by, order_by=order_by)) }}
 
 {% endmacro %}
 
@@ -51,9 +42,10 @@
 #}
 {%- macro postgres__deduplicate(relation, partition_by, order_by) -%}
 
-    select distinct on ({{ partition_by }}) *
+    select
+        distinct on ({{ partition_by }}) *
     from {{ relation }}
-    order by {{ partition_by }}{{ "," ~ order_by }}
+    order by {{ partition_by }}{{ ',' ~ order_by }}
 
 {%- endmacro -%}
 
@@ -66,7 +58,10 @@
     select *
     from {{ relation }}
     qualify
-        row_number() over (partition by {{ partition_by }} order by {{ order_by }}) = 1
+        row_number() over (
+            partition by {{ partition_by }}
+            order by {{ order_by }}
+        ) = 1
 
 {%- endmacro -%}
 
@@ -78,11 +73,15 @@
 {%- macro bigquery__deduplicate(relation, partition_by, order_by) -%}
 
     select unique.*
-    from
-        (
-            select array_agg(original order by {{ order_by }} limit 1)[offset(0)] unique
-            from {{ relation }} original
-            group by {{ partition_by }}
-        )
+    from (
+        select
+            array_agg (
+                original
+                order by {{ order_by }}
+                limit 1
+            )[offset(0)] unique
+        from {{ relation }} original
+        group by {{ partition_by }}
+    )
 
 {%- endmacro -%}

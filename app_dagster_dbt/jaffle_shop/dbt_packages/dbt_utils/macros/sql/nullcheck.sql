@@ -1,17 +1,21 @@
 {% macro nullcheck(cols) %}
-    {{ return(adapter.dispatch("nullcheck", "dbt_utils")(cols)) }}
+    {{ return(adapter.dispatch('nullcheck', 'dbt_utils')(cols)) }}
 {% endmacro %}
 
 {% macro default__nullcheck(cols) %}
-    {%- for col in cols %}
+{%- for col in cols %}
 
-        {% if col.is_string() -%} nullif({{ col.name }}, '') as {{ col.name }}
+    {% if col.is_string() -%}
 
-        {%- else -%} {{ col.name }}
+    nullif({{col.name}},'') as {{col.name}}
 
-        {%- endif -%}
+    {%- else -%}
 
-        {%- if not loop.last -%}, {%- endif -%}
+    {{col.name}}
 
-    {%- endfor -%}
+    {%- endif -%}
+
+{%- if not loop.last -%} , {%- endif -%}
+
+{%- endfor -%}
 {% endmacro %}
